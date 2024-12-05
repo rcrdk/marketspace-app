@@ -1,8 +1,10 @@
-# 🛍️ React Native Markerspace App
+<!-- https://efficient-sloth-d85.notion.site/Desafio-03-Marketspace-39a72342e820424aaa12d7713ab1d175#87372372df824b128392065e01360a77 -->
+
+# 🛍️ React Native Marketspace App
 ---
 
 <p align="center">
-  <img alt="React Native Markerspace App Preview" src="https://github.com/rcrdk/marketspace-app/blob/main/public/app.jpg?raw=true" width="100%" />
+  <img alt="React Native Marketspace App Preview" src="https://github.com/rcrdk/marketspace-app/blob/main/public/app.jpg?raw=true" width="100%" />
 </p>
 
 ## 📱 Features
@@ -17,4 +19,7 @@
 - [Axios](https://axios-http.com/)
 
 ## 🚚 API
-<!-- It was used an already existent API to develpe this app, check it out [here](https://github.com/orodrigogo/ignitegym-api). -->
+It was used an already existent API to develop this app, [check it out](https://github.com/rocketseat-education/ignite-rn-2022-challenge-marketspace-api).
+
+## 🎨 Figma
+The UI design was provied by Rocketseat, [check it out](https://www.figma.com/design/QDIc1W4grpfoy3kkPWVFB5/Marketspace-%E2%80%A2-Desafio-React-Native?m=auto&t=PITYEBLaaZA07HGW-6).
