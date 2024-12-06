@@ -3,11 +3,7 @@ const gluestackPlugin = require('@gluestack-ui/nativewind-utils/tailwind-plugin'
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'media',
-  content: [
-    'App.{tsx,jsx,ts,js}',
-    'index.{tsx,jsx,ts,js}',
-    'src/components/**/*.{tsx,jsx,ts,js}',
-  ],
+  content: ['App.{tsx,jsx,ts,js}', 'src/**/*.{tsx,jsx,ts,js}'],
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
@@ -166,18 +162,25 @@ module.exports = {
           info: 'rgb(var(--color-indicator-info)/<alpha-value>)',
           error: 'rgb(var(--color-indicator-error)/<alpha-value>)',
         },
+        app: {
+          'gray-100': '#1A181B',
+          'gray-200': '#3E3A40',
+          'gray-300': '#5F5B62',
+          'gray-400': '#9F9BA1',
+          'gray-500': '#D9D8DA',
+          'gray-600': '#EDECEE',
+          'gray-700': '#F7F7F8',
+          blue: '#364D9D',
+          'blue-light': '#647AC7',
+          'red-light': '#EE7979',
+        },
       },
       fontFamily: {
         heading: undefined,
         body: undefined,
         mono: undefined,
-        roboto: ['Roboto', 'sans-serif'],
-      },
-      fontWeight: {
-        extrablack: '950',
-      },
-      fontSize: {
-        '2xs': '10px',
+        karlaRegular: ['Karla_400Regular', 'sans-serif'],
+        karlaBold: ['Karla_700Bold', 'sans-serif'],
       },
       boxShadow: {
         'hard-1': '-2px 2px 8px 0px rgba(38, 38, 38, 0.20)',
