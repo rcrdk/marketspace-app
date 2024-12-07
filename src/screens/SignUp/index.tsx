@@ -1,25 +1,27 @@
 import BrandImage from '@assets/brand-icon.png'
-import { Avatar, type AvatarFile } from '@components/Avatar'
+import { type AvatarFile, AvatarSelector } from '@components/AvatarSelector'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
 import { Box } from '@components/ui/box'
 import { Text } from '@components/ui/text'
 import { VStack } from '@components/ui/vstack'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createUser } from '@http/create-user'
 import { useNavigation } from '@react-navigation/native'
 import type { AuthNavigatorRoutesProps } from '@routes/auth.routes'
 import { type SignUpFormSchema, signUpFormSchema } from '@schemas/signUpSchema'
+import { AppError } from '@utils/AppError'
 import { wait } from '@utils/wait'
 import { Eye, EyeSlash } from 'phosphor-react-native'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Image, ScrollView } from 'react-native'
+import { Alert, Image, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export function SignUp() {
   const [displayPassword, setDisplayPassword] = useState(false)
   const [displayConfirmPassword, setDisplayConfirmPassword] = useState(false)
-  const [avatarSelected, setAvatarSelected] = useState<AvatarFile>()
+  const [avatarSelected, setAvatarSelected] = useState({} as AvatarFile)
 
   const navigator = useNavigation<AuthNavigatorRoutesProps>()
 
@@ -47,22 +49,32 @@ export function SignUp() {
     if (field === 'confirmation') setDisplayConfirmPassword((prev) => !prev)
   }
 
-  async function handleSelectAvatar(avatar?: AvatarFile) {
+  async function handleSelectAvatar(avatar: AvatarFile) {
     setAvatarSelected(avatar)
   }
 
-  /**
-   * To be implemented
-   */
-  async function handleSignUpForm(data: SignUpFormSchema) {
+  async function handleSignUpForm({
+    name,
+    email,
+    password,
+    phone,
+  }: SignUpFormSchema) {
     try {
       await wait()
-      // first try to save user data
-      // then the avatar, in case avatar goes wrong
-      console.log(data)
-      console.log(avatarSelected)
+      await createUser({ name, email, password, phone, avatar: avatarSelected })
+
+      Alert.alert('Usuário cadastrado', 'Usuário cadastrado com sucesso!')
+
+      navigator.navigate('signIn')
     } catch (error) {
-      console.log(error)
+      let message =
+        'Não foi possível finalizar seu cadastro. Tente novamente mais tarde.'
+
+      if (error instanceof AppError) {
+        message = error.message
+      }
+
+      Alert.alert('Erro', message)
     }
   }
 
@@ -90,7 +102,7 @@ export function SignUp() {
           </VStack>
 
           <VStack space="lg" className="py-12">
-            <Avatar
+            <AvatarSelector
               avatar={avatarSelected?.uri}
               onSelectAvatar={handleSelectAvatar}
             />

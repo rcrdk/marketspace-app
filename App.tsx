@@ -1,6 +1,7 @@
 import '@styles/global.css'
 
 import { GluestackUIProvider } from '@components/ui/gluestack-ui-provider'
+import { AuthContextProvider } from '@contexts/AuthContext'
 import {
   Karla_400Regular,
   Karla_700Bold,
@@ -37,7 +38,9 @@ export default function App() {
         translucent
       />
 
-      <Routes />
+      <AuthContextProvider>
+        <Routes />
+      </AuthContextProvider>
     </GluestackUIProvider>
   )
 }

@@ -1,3 +1,6 @@
 export class AppError {
-  constructor(public message: string) {}
+  constructor(
+    public message: string,
+    public statusCode: number,
+  ) {}
 }

@@ -5,20 +5,22 @@ import { Box } from '@components/ui/box'
 import { Text } from '@components/ui/text'
 import { VStack } from '@components/ui/vstack'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '@hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
 import type { AuthNavigatorRoutesProps } from '@routes/auth.routes'
 import { type SignInFormSchema, signInFormSchema } from '@schemas/signInSchema'
-import { wait } from '@utils/wait'
+import { AppError } from '@utils/AppError'
 import { Eye, EyeSlash } from 'phosphor-react-native'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Image, ScrollView } from 'react-native'
+import { Alert, Image, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export function SignIn() {
   const [displayPassword, setDisplayPassword] = useState(false)
 
   const navigator = useNavigation<AuthNavigatorRoutesProps>()
+  const { onSignIn } = useAuth()
 
   const {
     handleSubmit,
@@ -40,14 +42,19 @@ export function SignIn() {
     setDisplayPassword((prev) => !prev)
   }
 
-  /**
-   * To be implemented
-   */
-  async function handleSignInForm(data: SignInFormSchema) {
+  async function handleSignInForm({ email, password }: SignInFormSchema) {
     try {
-      await wait()
-      console.log(data)
+      await onSignIn({ email, password })
     } catch (error) {
+      let message =
+        'Não foi possível acessar sua conta. Tente novamente mais tarde.'
+
+      if (error instanceof AppError) {
+        message = error.message
+      }
+
+      Alert.alert('Erro', message)
+
       console.log(error)
     }
   }

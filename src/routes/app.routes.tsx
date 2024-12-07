@@ -1,3 +1,4 @@
+import { useAuth } from '@hooks/useAuth'
 import {
   type BottomTabNavigationProp,
   createBottomTabNavigator,
@@ -20,14 +21,16 @@ const { Navigator, Screen } = createBottomTabNavigator<AppRoutesType>()
 
 const SignOutComponent = () => null
 
-function handleSignOut() {
-  Alert.alert('Sair do app', 'Deseja mesmo finalizar a sessão?', [
-    { style: 'cancel', text: 'Cancelar' },
-    { style: 'destructive', text: 'Sair', onPress: () => {} },
-  ])
-}
-
 export function AppRoutes() {
+  const { onSignOut } = useAuth()
+
+  function handleSignOut() {
+    Alert.alert('Sair do app', 'Deseja mesmo finalizar a sessão?', [
+      { style: 'cancel', text: 'Cancelar' },
+      { style: 'destructive', text: 'Sair', onPress: () => onSignOut() },
+    ])
+  }
+
   return (
     <Navigator
       screenOptions={{

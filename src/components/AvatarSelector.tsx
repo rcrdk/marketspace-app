@@ -1,5 +1,4 @@
 import { themeColors } from '@styles/colors'
-import { AppError } from '@utils/AppError'
 import * as FileSystem from 'expo-file-system'
 import * as ImagePicker from 'expo-image-picker'
 import mime from 'mime'
@@ -18,10 +17,10 @@ export type AvatarFile = {
 
 type Props = {
   avatar?: string
-  onSelectAvatar: (avatar?: AvatarFile) => Promise<AvatarFile | any>
+  onSelectAvatar: (avatar: AvatarFile) => Promise<AvatarFile | any>
 }
 
-export function Avatar({ avatar, onSelectAvatar }: Props) {
+export function AvatarSelector({ avatar, onSelectAvatar }: Props) {
   async function handleSelectAvatarImage(): Promise<AvatarFile | any> {
     try {
       const photoSelected = await ImagePicker.launchImageLibraryAsync({
@@ -64,11 +63,9 @@ export function Avatar({ avatar, onSelectAvatar }: Props) {
       }
 
       onSelectAvatar(avatarFile)
-    } catch (error) {
-      const isAppError = error instanceof AppError
-      const message = isAppError
-        ? error.message
-        : 'Não foi possível atualizar seu avatar. Tente novamente mais tarde.'
+    } catch {
+      const message =
+        'Não foi possível atualizar seu avatar. Tente novamente mais tarde.'
 
       Alert.alert('Erro', message)
     }
