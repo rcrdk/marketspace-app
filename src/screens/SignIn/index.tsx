@@ -53,7 +53,11 @@ export function SignIn() {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      automaticallyAdjustKeyboardInsets
+      showsVerticalScrollIndicator={false}
+    >
       <Box className="flex-1 bg-app-gray-700">
         <Box className="flex-1 py-8 px-12 justify-evenly bg-app-gray-600 rounded-b-3xl">
           <Image

@@ -1,7 +1,7 @@
 import BrandImage from '@assets/brand-icon.png'
+import { Avatar, type AvatarFile } from '@components/Avatar'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
-import { Avatar } from '@components/ui/avatar'
 import { Box } from '@components/ui/box'
 import { Text } from '@components/ui/text'
 import { VStack } from '@components/ui/vstack'
@@ -19,6 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 export function SignUp() {
   const [displayPassword, setDisplayPassword] = useState(false)
   const [displayConfirmPassword, setDisplayConfirmPassword] = useState(false)
+  const [avatarSelected, setAvatarSelected] = useState<AvatarFile>()
 
   const navigator = useNavigation<AuthNavigatorRoutesProps>()
 
@@ -46,20 +47,31 @@ export function SignUp() {
     if (field === 'confirmation') setDisplayConfirmPassword((prev) => !prev)
   }
 
+  async function handleSelectAvatar(avatar?: AvatarFile) {
+    setAvatarSelected(avatar)
+  }
+
   /**
    * To be implemented
    */
   async function handleSignUpForm(data: SignUpFormSchema) {
     try {
       await wait()
+      // first try to save user data
+      // then the avatar, in case avatar goes wrong
       console.log(data)
+      console.log(avatarSelected)
     } catch (error) {
       console.log(error)
     }
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      automaticallyAdjustKeyboardInsets
+      showsVerticalScrollIndicator={false}
+    >
       <SafeAreaView className="flex-1">
         <Box className="flex-1 py-12 px-12 justify-between">
           <VStack>
@@ -78,7 +90,10 @@ export function SignUp() {
           </VStack>
 
           <VStack space="lg" className="py-12">
-            {/* <Avatar className="self-center mb-6" size="2xl" /> */}
+            <Avatar
+              avatar={avatarSelected?.uri}
+              onSelectAvatar={handleSelectAvatar}
+            />
 
             <Controller
               control={control}
