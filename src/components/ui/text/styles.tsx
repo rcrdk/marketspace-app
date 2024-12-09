@@ -6,7 +6,7 @@ const baseStyle = isWeb
   : ''
 
 export const textStyle = tva({
-  base: `color-app-gray-100 font-karlaRegular ${baseStyle}`,
+  base: ` font-karlaRegular ${baseStyle}`,
 
   variants: {
     isTruncated: {

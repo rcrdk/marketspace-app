@@ -19,6 +19,7 @@ const Text = React.forwardRef<React.ElementRef<typeof RNText>, ITextProps>(
       sub,
       italic,
       highlight,
+
       ...props
     },
     ref,

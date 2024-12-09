@@ -54,8 +54,6 @@ export function SignIn() {
       }
 
       Alert.alert('Erro', message)
-
-      console.log(error)
     }
   }
 

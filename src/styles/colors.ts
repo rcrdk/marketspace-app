@@ -8,5 +8,6 @@ export const themeColors = {
   'gray-700': '#F7F7F8',
   blue: '#364D9D',
   'blue-light': '#647AC7',
+  'blue-soft-light': '#DFE1EA',
   'red-light': '#EE7979',
 } as const

@@ -1,5 +1,6 @@
 import { Pressable } from '@components/ui/pressable'
-import type { ComponentProps } from 'react'
+import type { IconProps } from 'phosphor-react-native'
+import type { ComponentProps, ElementType } from 'react'
 
 import { Spinner } from './ui/spinner'
 import { Text } from './ui/text'
@@ -8,16 +9,20 @@ type Props = ComponentProps<typeof Pressable> & {
   label: string
   variants?: 'branded' | 'primary' | 'secondary'
   loading?: boolean
+  iconBefore?: ElementType<IconProps, any>
+  iconAfter?: ElementType<IconProps, any>
 }
 
 export function Button({
   label,
   variants = 'branded',
   loading = false,
+  iconBefore,
+  iconAfter,
   ...props
 }: Props) {
   const baseStyles = {
-    container: `${props.className ?? ''} items-center justify-center h-12 rounded-md`,
+    container: `${props.className ?? ''} items-center justify-center flex-row gap-3 h-12 rounded-md`,
     text: 'color-app-gray-100',
   }
 
@@ -49,9 +54,13 @@ export function Button({
       {loading ? (
         <Spinner className={text} />
       ) : (
-        <Text className={text} size="md" bold>
-          {label}
-        </Text>
+        <>
+          {iconBefore}
+          <Text className={text} size="md" bold>
+            {label}
+          </Text>
+          {iconAfter}
+        </>
       )}
     </Pressable>
   )

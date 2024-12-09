@@ -4,6 +4,8 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
 import { Home } from '@screens/Home'
+import { ProductDetails } from '@screens/ProductDetails'
+import { ProductForm } from '@screens/ProductForm'
 import { Products } from '@screens/Products'
 import { themeColors } from '@styles/colors'
 import { House, SignOut, Tag } from 'phosphor-react-native'
@@ -13,6 +15,10 @@ type AppRoutesType = {
   home: undefined
   products: undefined
   signOut: undefined
+  newProduct: undefined
+  productDetails: {
+    id: string
+  }
 }
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutesType>
@@ -77,6 +83,30 @@ export function AppRoutes() {
           tabPress: (e) => {
             e.preventDefault()
             handleSignOut()
+          },
+        }}
+      />
+
+      <Screen
+        name="newProduct"
+        component={ProductForm}
+        options={{
+          tabBarButton: () => <></>,
+          tabBarItemStyle: { display: 'none' },
+          tabBarStyle: {
+            display: 'none',
+          },
+        }}
+      />
+
+      <Screen
+        name="productDetails"
+        component={ProductDetails}
+        options={{
+          tabBarButton: () => <></>,
+          tabBarItemStyle: { display: 'none' },
+          tabBarStyle: {
+            display: 'none',
           },
         }}
       />

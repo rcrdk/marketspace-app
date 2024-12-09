@@ -22,9 +22,9 @@ const avatarStyle = tva({
   base: 'rounded-full justify-center items-center relative bg-primary-600 group-[.avatar-group]/avatar-group:-ml-2.5',
   variants: {
     size: {
-      xs: 'w-6 h-6',
+      xs: 'w-7 h-7',
       sm: 'w-8 h-8',
-      md: 'w-12 h-12',
+      md: 'w-14 h-14',
       lg: 'w-16 h-16',
       xl: 'w-24 h-24',
       '2xl': 'w-32 h-32',
