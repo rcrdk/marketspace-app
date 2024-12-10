@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 import type { AuthNavigatorRoutesProps } from '@routes/auth.routes'
 import { type SignInFormSchema, signInFormSchema } from '@schemas/signInSchema'
 import { AppError } from '@utils/AppError'
+import { wait } from '@utils/wait'
 import { Eye, EyeSlash } from 'phosphor-react-native'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -44,6 +45,7 @@ export function SignIn() {
 
   async function handleSignInForm({ email, password }: SignInFormSchema) {
     try {
+      await wait()
       await onSignIn({ email, password })
     } catch (error) {
       let message =
@@ -67,6 +69,7 @@ export function SignIn() {
         <Box className="flex-1 py-8 px-12 justify-evenly bg-app-gray-600 rounded-b-3xl">
           <Image
             source={BrandImage}
+            defaultSource={BrandImage}
             className="w-[192px] h-[132px] self-center mb-12"
           />
 

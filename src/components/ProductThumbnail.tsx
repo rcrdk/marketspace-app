@@ -59,13 +59,34 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
             className="absolute top-2 left-2"
           />
         )}
+
+        {product.is_active && (
+          <Box className="items-start justify-end absolute bg-app-gray-100/45 top-0 left-0 w-full h-full rounded-md">
+            <Text
+              className="text-app-gray-700 uppercase text-sm leading-4 pb-2 ps-2"
+              bold
+            >
+              Anúncio desativado
+            </Text>
+          </Box>
+        )}
       </Box>
 
-      <Text className="text-md pt-2 pb-1">{product.name}</Text>
-      <Text className="text-lg" bold>
-        <Text className="text-sm" bold>
+      <Text
+        className={`text-md pt-2 pb-1 ${product.is_active && 'text-app-gray-400'}`}
+      >
+        {product.name}
+      </Text>
+      <Text
+        className={`text-lg ${product.is_active && 'text-app-gray-400'}`}
+        bold
+      >
+        <Text
+          className={`text-sm ${product.is_active && 'text-app-gray-400'}`}
+          bold
+        >
           R$
-        </Text>{' '}
+        </Text>
         {formattedPrice}
       </Text>
     </Pressable>

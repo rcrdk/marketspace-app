@@ -1,8 +1,8 @@
 import { Header } from '@components/Header'
+import { Icon } from '@components/ui/icon'
 // import { useAuth } from '@hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
-import { themeColors } from '@styles/colors'
 import { ArrowLeft } from 'phosphor-react-native'
 
 export function ProductDetails() {
@@ -18,7 +18,9 @@ export function ProductDetails() {
       <Header
         leftButton={{
           onPress: handleGoBack,
-          children: <ArrowLeft color={themeColors['gray-100']} />,
+          children: (
+            <Icon as={ArrowLeft} className="fill-app-gray-100 w-7 h-7" />
+          ),
         }}
       />
     </>

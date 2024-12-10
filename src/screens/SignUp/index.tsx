@@ -89,6 +89,7 @@ export function SignUp() {
           <VStack>
             <Image
               source={BrandImage}
+              defaultSource={BrandImage}
               className="w-[60px] h-[40px] self-center"
             />
 

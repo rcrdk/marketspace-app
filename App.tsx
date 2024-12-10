@@ -11,6 +11,7 @@ import { Routes } from '@routes/index'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import { StatusBar } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -31,16 +32,18 @@ export default function App() {
   }
 
   return (
-    <GluestackUIProvider mode="light">
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <GluestackUIProvider mode="light">
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="transparent"
+          translucent
+        />
 
-      <AuthContextProvider>
-        <Routes />
-      </AuthContextProvider>
-    </GluestackUIProvider>
+        <AuthContextProvider>
+          <Routes />
+        </AuthContextProvider>
+      </GluestackUIProvider>
+    </GestureHandlerRootView>
   )
 }

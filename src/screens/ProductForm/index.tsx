@@ -1,7 +1,7 @@
 import { Header } from '@components/Header'
+import { Icon } from '@components/ui/icon'
 import { useNavigation } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
-import { themeColors } from '@styles/colors'
 import { ArrowLeft } from 'phosphor-react-native'
 
 export function ProductForm() {
@@ -17,7 +17,9 @@ export function ProductForm() {
         title="Criar anúncio"
         leftButton={{
           onPress: handleCancel,
-          children: <ArrowLeft color={themeColors['gray-100']} />,
+          children: (
+            <Icon as={ArrowLeft} className="fill-app-gray-100 w-7 h-7" />
+          ),
         }}
       />
     </>

@@ -21,12 +21,6 @@ const API = axios.create({
   baseURL: 'http://192.168.1.6:3333',
 }) as ApiInstanceProps
 
-// API.interceptors.response.use(async (response) => {
-//   await new Promise((resolve) => setTimeout(resolve, 2000))
-
-//   return response.data
-// })
-
 let failedQueue: PromisseType[] = []
 let isRefreshing = false
 
