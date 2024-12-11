@@ -60,7 +60,7 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
           />
         )}
 
-        {product.is_active && (
+        {!product.is_active && (
           <Box className="items-start justify-end absolute bg-app-gray-100/45 top-0 left-0 w-full h-full rounded-md">
             <Text
               className="text-app-gray-700 uppercase text-sm leading-4 pb-2 ps-2"
@@ -73,16 +73,16 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
       </Box>
 
       <Text
-        className={`text-md pt-2 pb-1 ${product.is_active && 'text-app-gray-400'}`}
+        className={`text-md pt-2 pb-1 ${!product.is_active && 'text-app-gray-400'}`}
       >
         {product.name}
       </Text>
       <Text
-        className={`text-lg ${product.is_active && 'text-app-gray-400'}`}
+        className={`text-lg ${!product.is_active && 'text-app-gray-400'}`}
         bold
       >
         <Text
-          className={`text-sm ${product.is_active && 'text-app-gray-400'}`}
+          className={`text-sm ${!product.is_active && 'text-app-gray-400'}`}
           bold
         >
           R$
@@ -95,7 +95,7 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
 
 export function ProductThumbnailSkeleton() {
   return (
-    <VStack className="mb-6 flex-1">
+    <VStack className="w-[47%] mb-6">
       <Skeleton className="aspect-[3/2] w-auto h-auto" />
       <SkeletonText className="w-2/3 h-3 mt-2 mb-1" />
       <SkeletonText className="w-1/2 h-4" />

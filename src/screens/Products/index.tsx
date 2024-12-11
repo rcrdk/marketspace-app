@@ -1,3 +1,4 @@
+import { Empty } from '@components/Empty'
 import { Header } from '@components/Header'
 import {
   ProductThumbnail,
@@ -102,6 +103,17 @@ export function Products() {
             contentContainerClassName="pb-6"
             numColumns={2}
             columnWrapperClassName="gap-6 justify-between"
+            contentContainerStyle={{ flexGrow: 1 }}
+            ListEmptyComponent={() => (
+              <Empty
+                title="Você ainda não tem anúncios"
+                text="Comece a anunciar produtos agora mesmo!"
+                button={{
+                  label: 'Anunciar novo produto',
+                  onPress: handleNewProduct,
+                }}
+              />
+            )}
           />
         )}
       </Box>

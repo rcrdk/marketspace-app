@@ -22,7 +22,7 @@ import {
 import { Switch } from '@components/ui/switch'
 import { Text } from '@components/ui/text'
 import { VStack } from '@components/ui/vstack'
-import type { ProductsFilterSchema } from '@schemas/productsFiltersSchema'
+import { type ProductsFilterSchema } from '@schemas/productsFiltersSchema'
 import { themeColors } from '@styles/colors'
 import {
   Check,
@@ -41,7 +41,7 @@ type Props = {
 export function Filters({ onChangeFilters }: Props) {
   const [showFilters, setShowFilters] = useState(false)
 
-  const { control, handleSubmit, reset } =
+  const { control, handleSubmit, reset, getValues } =
     useFormContext<ProductsFilterSchema>()
 
   function handleToggleFiltersVisibility() {
@@ -55,10 +55,11 @@ export function Filters({ onChangeFilters }: Props) {
   }, [onChangeFilters, reset])
 
   const handleApplyFilters = useCallback(() => {
+    const data = getValues()
+
     setShowFilters(false)
-    const timer = setTimeout(handleSubmit(onChangeFilters), 500)
-    return () => clearTimeout(timer)
-  }, [handleSubmit, onChangeFilters])
+    onChangeFilters(data)
+  }, [getValues, onChangeFilters])
 
   const getPaymentMethods = useMemo(
     () => [
@@ -87,6 +88,8 @@ export function Filters({ onChangeFilters }: Props) {
               className="pr-24"
               onChangeText={onChange}
               value={value}
+              enterKeyHint="search"
+              onSubmitEditing={handleSubmit(onChangeFilters)}
             />
           )}
         />
@@ -94,7 +97,7 @@ export function Filters({ onChangeFilters }: Props) {
         <HStack className="absolute top-0 right-0 h-full items-center">
           <Pressable
             className="w-12 h-full items-center justify-center"
-            onPress={handleSubmit(onChangeFilters)}
+            onPress={handleApplyFilters}
           >
             <Icon as={MagnifyingGlass} className="fill-app-gray-100 w-7 h-7" />
           </Pressable>
@@ -138,21 +141,24 @@ export function Filters({ onChangeFilters }: Props) {
                 >
                   <Radio value="all" size="lg">
                     <RadioIndicator>
-                      <RadioIcon as={Circle} />
+                      {/* @ts-ignore: Unreachable code error */}
+                      <RadioIcon as={Circle} weight="fill" />
                     </RadioIndicator>
-                    <RadioLabel>Todos</RadioLabel>
+                    <RadioLabel>Novos e usados</RadioLabel>
                   </Radio>
 
                   <Radio value="true" size="lg">
                     <RadioIndicator>
-                      <RadioIcon as={Circle} />
+                      {/* @ts-ignore: Unreachable code error */}
+                      <RadioIcon as={Circle} weight="fill" />
                     </RadioIndicator>
                     <RadioLabel>Novos</RadioLabel>
                   </Radio>
 
                   <Radio value="false" size="lg">
                     <RadioIndicator>
-                      <RadioIcon as={Circle} />
+                      {/* @ts-ignore: Unreachable code error */}
+                      <RadioIcon as={Circle} weight="fill" />
                     </RadioIndicator>
                     <RadioLabel>Usados</RadioLabel>
                   </Radio>
@@ -188,7 +194,7 @@ export function Filters({ onChangeFilters }: Props) {
               name="paymentMethods"
               render={({ field: { value, onChange } }) => (
                 <CheckboxGroup
-                  value={value}
+                  value={value as string[]}
                   onChange={onChange}
                   className="gap-2"
                 >
