@@ -26,7 +26,7 @@ export function Products() {
   const navigator = useNavigation<AppNavigatorRoutesProps>()
 
   function handleNewProduct() {
-    navigator.navigate('newProduct')
+    navigator.navigate('productCreate')
   }
 
   function handleChangeFilterSelected(status?: boolean) {

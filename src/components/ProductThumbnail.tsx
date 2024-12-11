@@ -28,7 +28,9 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
   }
 
   const formattedPrice = useMemo(() => {
-    return (product.price / 100).toLocaleString()
+    const productPrice = product?.price ?? 0
+
+    return (productPrice / 100).toLocaleString('pt-BR')
   }, [product])
 
   return (
@@ -85,7 +87,7 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
           className={`text-sm ${!product.is_active && 'text-app-gray-400'}`}
           bold
         >
-          R$
+          R${' '}
         </Text>
         {formattedPrice}
       </Text>

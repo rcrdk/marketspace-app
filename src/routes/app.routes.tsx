@@ -4,8 +4,9 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
 import { Home } from '@screens/Home'
+import { ProductCreate } from '@screens/ProductCreate'
 import { ProductDetails } from '@screens/ProductDetails'
-import { ProductForm } from '@screens/ProductForm'
+import { ProductEdit } from '@screens/ProductEdit'
 import { Products } from '@screens/Products'
 import { themeColors } from '@styles/colors'
 import { House, SignOut, Tag } from 'phosphor-react-native'
@@ -15,7 +16,10 @@ type AppRoutesType = {
   home: undefined
   products: undefined
   signOut: undefined
-  newProduct: undefined
+  productCreate: undefined
+  productEdit: {
+    id: string
+  }
   productDetails: {
     id: string
   }
@@ -88,8 +92,20 @@ export function AppRoutes() {
       />
 
       <Screen
-        name="newProduct"
-        component={ProductForm}
+        name="productCreate"
+        component={ProductCreate}
+        options={{
+          tabBarButton: () => <></>,
+          tabBarItemStyle: { display: 'none' },
+          tabBarStyle: {
+            display: 'none',
+          },
+        }}
+      />
+
+      <Screen
+        name="productEdit"
+        component={ProductEdit}
         options={{
           tabBarButton: () => <></>,
           tabBarItemStyle: { display: 'none' },

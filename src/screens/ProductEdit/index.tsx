@@ -1,20 +1,27 @@
 import { Header } from '@components/Header'
 import { Icon } from '@components/ui/icon'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
 import { ArrowLeft } from 'phosphor-react-native'
 
-export function ProductForm() {
+type RouteParams = {
+  id: string
+}
+
+export function ProductEdit() {
   const navigator = useNavigation<AppNavigatorRoutesProps>()
 
+  const { params } = useRoute()
+  const { id } = params as RouteParams
+
   function handleCancel() {
-    navigator.goBack()
+    navigator.navigate('productDetails', { id })
   }
 
   return (
     <>
       <Header
-        title="Criar anúncio"
+        title="Editar anúncio"
         leftButton={{
           onPress: handleCancel,
           children: (

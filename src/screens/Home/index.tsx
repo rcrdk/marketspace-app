@@ -12,7 +12,7 @@ import {
   productsFilterSchema,
 } from '@schemas/productsFiltersSchema'
 import { AppError } from '@utils/AppError'
-import { isBooleanOrUndefined } from '@utils/booleanDefined'
+import { isBooleanOrUndefined } from '@utils/isBooleanOrUndefined'
 import { wait } from '@utils/wait'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
