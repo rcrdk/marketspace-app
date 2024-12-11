@@ -104,8 +104,6 @@ export function ProductDetailsContextProvider({
 
       navigator.navigate('products')
     } catch (error) {
-      console.error(error)
-
       let message =
         'Não foi possível atualizar a disponibilidade do anúncio. Tente novamente mais tarde.'
 

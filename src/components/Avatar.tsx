@@ -14,7 +14,7 @@ type Props = {
 export function Avatar({ uri, size, variants, className }: Props) {
   return (
     <AvatarContainer
-      className={`${variants === 'branded' ? 'border-app-blue-light bg-app-blue-light' : 'border-app-gray-700 bg-app-gray-700'} ${size === 'lead' ? 'border-2' : 'border'} ${className ?? ''}`}
+      className={`border-2 ${variants === 'branded' ? 'border-app-blue-light bg-app-blue-light' : 'border-app-gray-700 bg-app-gray-700'} ${className ?? ''}`}
       size={size === 'lead' ? 'md' : 'xs'}
     >
       {uri && (

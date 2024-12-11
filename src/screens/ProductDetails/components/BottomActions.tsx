@@ -103,6 +103,7 @@ export function BottomActions({ isEditMode }: Props) {
             }
             onPress={handleProductStatus}
             loading={isLoadingProductStatus}
+            disabled={isLoadingProductStatus}
           />
 
           <Button
@@ -113,6 +114,7 @@ export function BottomActions({ isEditMode }: Props) {
             variants="secondary"
             onPress={handleDeleteProduct}
             loading={isLoadingProductRemoval}
+            disabled={isLoadingProductRemoval}
           />
         </VStack>
       </SafeAreaView>

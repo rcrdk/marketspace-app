@@ -4,7 +4,7 @@ export type ProductImageDTO = {
 }
 
 export type ProductPaymentMethodDTO = {
-  key: string
+  key: 'pix' | 'card' | 'boleto' | 'cash' | 'deposit'
   name: string
 }
 

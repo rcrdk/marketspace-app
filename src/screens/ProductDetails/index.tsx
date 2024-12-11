@@ -14,6 +14,8 @@ import { useCallback } from 'react'
 import { ScrollView } from 'react-native'
 
 import { BottomActions } from './components/BottomActions'
+import { ImageSlider } from './components/ImageSlider'
+import { Info } from './components/Info'
 
 type RouteParams = {
   id: string
@@ -71,8 +73,12 @@ function ProductDetailsComponent() {
         }}
       />
 
-      <ScrollView>
-        <></>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={!isLoadingProduct}
+      >
+        <ImageSlider />
+        <Info />
       </ScrollView>
 
       <BottomActions isEditMode={authUserOwnsProduct} />
