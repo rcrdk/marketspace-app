@@ -1,7 +1,6 @@
-import type { ProductDetailsDTO } from '@dtos/ProductDTO'
 import { deleteProduct } from '@http/delete-product'
 import { deleteProductImages } from '@http/delete-product-images'
-import { getProduct } from '@http/get-product'
+import { getProduct, type GetProductResponse } from '@http/get-product'
 import { updateProductStatus } from '@http/update-product-status'
 import { useNavigation } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
@@ -11,14 +10,14 @@ import { createContext, type ReactNode, useMemo, useState } from 'react'
 import { Alert } from 'react-native'
 
 export type ProductDetailsContextProps = {
-  product: ProductDetailsDTO
+  product: GetProductResponse
   isProductActive: boolean
   isLoadingProduct: boolean
   isLoadingProductStatus: boolean
   isLoadingProductRemoval: boolean
-  onFetchProductDetails: (id: string) => void
-  onUpdateProductStatus: () => void
-  onDeleteProduct: () => void
+  onFetchProductDetails: (id: string) => Promise<void>
+  onUpdateProductStatus: () => Promise<void>
+  onDeleteProduct: () => Promise<void>
 }
 
 type ProductDetailsContextProviderProps = {
@@ -32,7 +31,7 @@ export const ProductDetailsContext = createContext<ProductDetailsContextProps>(
 export function ProductDetailsContextProvider({
   children,
 }: ProductDetailsContextProviderProps) {
-  const [product, setProduct] = useState({} as ProductDetailsDTO)
+  const [product, setProduct] = useState({} as GetProductResponse)
   const [isProductActive, setIsProductActive] = useState(false)
 
   const [isLoadingProduct, setIsLoadingProduct] = useState(true)

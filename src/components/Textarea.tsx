@@ -1,12 +1,10 @@
 import {
-  Input as InputComponent,
-  InputField,
-  InputIcon,
-  InputSlot,
-} from '@components/ui/input'
+  Textarea as TextareaComponent,
+  TextareaInput,
+} from '@components/ui/textarea'
 import { themeColors } from '@styles/colors'
-import { type IconProps, WarningCircle } from 'phosphor-react-native'
-import type { ComponentProps, ElementType, ReactNode } from 'react'
+import { WarningCircle } from 'phosphor-react-native'
+import type { ComponentProps } from 'react'
 import type { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form'
 
 import {
@@ -16,32 +14,25 @@ import {
   FormControlErrorText,
 } from './ui/form-control'
 
-type Props = ComponentProps<typeof InputField> & {
+type Props = ComponentProps<typeof TextareaInput> & {
   placeholder?: string
   errorMessage?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>
-  icon?: ElementType<IconProps>
-  onIconPress?: () => void
   disabled?: boolean
-  preffix?: ReactNode
 }
 
-export function Input({
+export function Textarea({
   placeholder,
-  icon,
-  onIconPress,
   errorMessage,
   disabled = false,
-  preffix,
   ...props
 }: Props) {
   return (
     <FormControl isInvalid={!!errorMessage}>
-      <InputComponent
-        className="h-14 px-3 py-2 text-lg bg-app-gray-700 rounded-md border-app-gray-700 data-[focus=true]:border-app-blue-light"
+      <TextareaComponent
+        className="px-3 pt-1 pb-2 text-lg bg-app-gray-700 rounded-md border-app-gray-700 data-[focus=true]:border-app-blue-light data-[invalid=true]:data-[focus=true]:border-app-red-light"
         isDisabled={disabled}
       >
-        {preffix}
-        <InputField
+        <TextareaInput
           placeholder={placeholder}
           placeholderTextColor={
             !errorMessage ? themeColors['gray-400'] : themeColors['red-light']
@@ -49,16 +40,7 @@ export function Input({
           className="text-lg font-karlaRegular"
           {...props}
         />
-        {icon && onIconPress && (
-          <InputSlot onPress={onIconPress}>
-            <InputIcon
-              as={icon}
-              className=" fill-app-gray-300 w-7 h-7"
-              size="xl"
-            />
-          </InputSlot>
-        )}
-      </InputComponent>
+      </TextareaComponent>
 
       <FormControlError>
         <FormControlErrorIcon

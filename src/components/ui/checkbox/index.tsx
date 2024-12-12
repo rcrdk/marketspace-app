@@ -72,7 +72,7 @@ const checkboxStyle = tva({
 })
 
 const checkboxIndicatorStyle = tva({
-  base: 'justify-center items-center bg-app-gray-500 rounded data-[checked=true]:bg-app-blue-light data-[hover=true]:data-[checked=true]:data-[disabled=true]:bg-app-blue-light data-[hover=true]:data-[checked=true]:data-[disabled=true]:opacity-40 data-[disabled=true]:opacity-40',
+  base: 'justify-center items-center bg-app-gray-500 rounded data-[checked=true]:bg-app-blue-light data-[hover=true]:data-[checked=true]:data-[disabled=true]:bg-app-blue-light data-[hover=true]:data-[checked=true]:data-[disabled=true]:opacity-40 data-[disabled=true]:opacity-40 data-[invalid=true]:bg-app-red-light data-[invalid=true]:opacity-40',
   parentVariants: {
     size: {
       lg: 'w-6 h-6',
@@ -83,7 +83,7 @@ const checkboxIndicatorStyle = tva({
 })
 
 const checkboxLabelStyle = tva({
-  base: 'font-body text-app-gray-200 data-[checked=true]:text-app-gray-200 data-[hover=true]:text-app-gray-200 data-[hover=true]:data-[checked=true]:text-app-gray-200 data-[hover=true]:data-[checked=true]:data-[disabled=true]:text-app-gray-200 data-[hover=true]:data-[disabled=true]:text-typography-400 data-[active=true]:text-app-gray-200 data-[active=true]:data-[checked=true]:text-app-gray-200 data-[disabled=true]:opacity-40 web:select-none',
+  base: 'font-body text-app-gray-200 data-[checked=true]:text-app-gray-200 data-[hover=true]:text-app-gray-200 data-[hover=true]:data-[checked=true]:text-app-gray-200 data-[hover=true]:data-[checked=true]:data-[disabled=true]:text-app-gray-200 data-[hover=true]:data-[disabled=true]:text-typography-400 data-[active=true]:text-app-gray-200 data-[active=true]:data-[checked=true]:text-app-gray-200 data-[disabled=true]:opacity-40 web:select-none data-[invalid=true]:text-app-red-light',
   parentVariants: {
     size: {
       lg: 'text-lg',

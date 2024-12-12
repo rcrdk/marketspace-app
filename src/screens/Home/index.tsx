@@ -4,9 +4,8 @@ import {
   ProductThumbnailSkeleton,
 } from '@components/ProductThumbnail'
 import { VStack } from '@components/ui/vstack'
-import type { ProductDTO } from '@dtos/ProductDTO'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { getProducts } from '@http/get-products'
+import { getProducts, type GetProductsResponse } from '@http/get-products'
 import {
   type ProductsFilterSchema,
   productsFilterSchema,
@@ -28,7 +27,7 @@ export function Home() {
   const [filtersSelected, setFiltersSelected] = useState(
     {} as ProductsFilterSchema,
   )
-  const [products, setProducts] = useState<ProductDTO[]>([])
+  const [products, setProducts] = useState<GetProductsResponse[]>([])
 
   const methods = useForm<ProductsFilterSchema>({
     resolver: zodResolver(productsFilterSchema),

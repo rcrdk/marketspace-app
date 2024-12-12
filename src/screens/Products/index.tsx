@@ -6,8 +6,10 @@ import {
 } from '@components/ProductThumbnail'
 import { Box } from '@components/ui/box'
 import { Icon } from '@components/ui/icon'
-import type { ProductDTO } from '@dtos/ProductDTO'
-import { getUserProducts } from '@http/get-user-products'
+import {
+  getUserProducts,
+  type GetUserProductsResponse,
+} from '@http/get-user-products'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
 import { AppError } from '@utils/AppError'
@@ -21,12 +23,12 @@ import { Filters } from './components/Filters'
 export function Products() {
   const [isLoading, setIsLoading] = useState(true)
   const [filterSelected, setFilterSelected] = useState<boolean>()
-  const [products, setProducts] = useState<ProductDTO[]>([])
+  const [products, setProducts] = useState<GetUserProductsResponse[]>([])
 
   const navigator = useNavigation<AppNavigatorRoutesProps>()
 
   function handleNewProduct() {
-    navigator.navigate('productCreate')
+    navigator.navigate('productForm', { id: undefined })
   }
 
   function handleChangeFilterSelected(status?: boolean) {

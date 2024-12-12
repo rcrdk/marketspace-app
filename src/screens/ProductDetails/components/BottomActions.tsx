@@ -1,21 +1,34 @@
 import { Button } from '@components/Button'
 import { HStack } from '@components/ui/hstack'
+import { Icon } from '@components/ui/icon'
 import { Skeleton } from '@components/ui/skeleton'
 import { Text } from '@components/ui/text'
 import { VStack } from '@components/ui/vstack'
 import { useProductDetails } from '@hooks/useProductDetails'
+import { useProductForm } from '@hooks/useProductForm'
+import { useNavigation } from '@react-navigation/native'
+import type { AppNavigatorRoutesProps } from '@routes/app.routes'
 import { themeColors } from '@styles/colors'
 import { navigateToWhatsAppConversation } from '@utils/navigateToWhatsAppConversation'
-import { Power, Trash, WhatsappLogo } from 'phosphor-react-native'
+import {
+  ArrowLeft,
+  PaperPlaneTilt,
+  Power,
+  Trash,
+  WhatsappLogo,
+} from 'phosphor-react-native'
 import { useCallback, useMemo } from 'react'
 import { Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 type Props = {
   isEditMode: boolean
+  isPreviewMode: boolean
 }
 
-export function BottomActions({ isEditMode }: Props) {
+export function BottomActions({ isEditMode, isPreviewMode }: Props) {
+  const navigator = useNavigation<AppNavigatorRoutesProps>()
+
   const {
     product,
     isProductActive,
@@ -25,6 +38,22 @@ export function BottomActions({ isEditMode }: Props) {
     onDeleteProduct,
     onUpdateProductStatus,
   } = useProductDetails()
+
+  const { onPublishProduct, onResetProductForm } = useProductForm()
+
+  const handlePublishProduct = useCallback(() => {
+    // try catch
+    onPublishProduct()
+    onResetProductForm()
+
+    // reset form on success
+    // scroll view to top
+    navigator.navigate('products')
+  }, [navigator, onPublishProduct, onResetProductForm])
+
+  const handleBackToProductForm = useCallback(() => {
+    navigator.navigate('productForm', {})
+  }, [navigator])
 
   const handleSendMessageOnWhatsApp = useCallback(() => {
     navigateToWhatsAppConversation(
@@ -73,6 +102,43 @@ export function BottomActions({ isEditMode }: Props) {
     const productPrice = product?.price ?? 0
     return (productPrice / 100).toLocaleString('pt-BR')
   }, [product])
+
+  if (isPreviewMode) {
+    return (
+      <SafeAreaView
+        className="bg-app-gray-700 px-6 pt-6 ios:pb-0 android:pb-6"
+        edges={['bottom', 'left', 'right']}
+      >
+        <HStack className="item-center justify-between gap-3">
+          <Button
+            label="Voltar e editar"
+            variants="secondary"
+            className="flex-1"
+            iconBefore={
+              <Icon
+                as={ArrowLeft}
+                className="fill-app-gray-100 stroke-none w-6 h-6"
+              />
+            }
+            onPress={handleBackToProductForm}
+          />
+
+          <Button
+            label="Publicar anúncio"
+            variants="branded"
+            className="flex-1"
+            iconBefore={
+              <Icon
+                as={PaperPlaneTilt}
+                className="fill-app-gray-700 stroke-none w-6 h-6"
+              />
+            }
+            onPress={handlePublishProduct}
+          />
+        </HStack>
+      </SafeAreaView>
+    )
+  }
 
   if (isLoadingProduct) {
     return (

@@ -1,4 +1,5 @@
-import type { ProductDTO } from '@dtos/ProductDTO'
+import type { GetProductsResponse } from '@http/get-products'
+import type { GetUserProductsResponse } from '@http/get-user-products'
 import { useNavigation } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
 import { API } from '@services/api'
@@ -16,7 +17,7 @@ import { Text } from './ui/text'
 import { VStack } from './ui/vstack'
 
 type Props = {
-  product: ProductDTO
+  product: GetProductsResponse | GetUserProductsResponse
   showSellerAvatar?: boolean
 }
 
@@ -24,7 +25,7 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
   const navigator = useNavigation<AppNavigatorRoutesProps>()
 
   function handleShowProductDetails() {
-    navigator.navigate('productDetails', { id: product.id })
+    navigator.navigate('productDetails', { id: product.id, preview: false })
   }
 
   const formattedPrice = useMemo(() => {

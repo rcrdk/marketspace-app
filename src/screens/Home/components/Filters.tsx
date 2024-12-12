@@ -1,36 +1,20 @@
 import { ActionSheet } from '@components/ActionSheet'
 import { Button } from '@components/Button'
+import { Checkbox } from '@components/Checkbox'
 import { Input } from '@components/Input'
+import { Radio } from '@components/Radio'
 import { Box } from '@components/ui/box'
-import {
-  Checkbox,
-  CheckboxGroup,
-  CheckboxIcon,
-  CheckboxIndicator,
-  CheckboxLabel,
-} from '@components/ui/checkbox'
+import { CheckboxGroup } from '@components/ui/checkbox'
 import { HStack } from '@components/ui/hstack'
 import { Icon } from '@components/ui/icon'
 import { Pressable } from '@components/ui/pressable'
-import {
-  Radio,
-  RadioGroup,
-  RadioIcon,
-  RadioIndicator,
-  RadioLabel,
-} from '@components/ui/radio'
+import { RadioGroup } from '@components/ui/radio'
 import { Switch } from '@components/ui/switch'
 import { Text } from '@components/ui/text'
 import { VStack } from '@components/ui/vstack'
 import { type ProductsFilterSchema } from '@schemas/productsFiltersSchema'
 import { themeColors } from '@styles/colors'
-import {
-  Check,
-  Circle,
-  MagnifyingGlass,
-  Sliders,
-  X,
-} from 'phosphor-react-native'
+import { MagnifyingGlass, Sliders, X } from 'phosphor-react-native'
 import { useCallback, useMemo, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
@@ -139,29 +123,9 @@ export function Filters({ onChangeFilters }: Props) {
                   onChange={onChange}
                   className="gap-2"
                 >
-                  <Radio value="all" size="lg">
-                    <RadioIndicator>
-                      {/* @ts-ignore: Unreachable code error */}
-                      <RadioIcon as={Circle} weight="fill" />
-                    </RadioIndicator>
-                    <RadioLabel>Novos e usados</RadioLabel>
-                  </Radio>
-
-                  <Radio value="true" size="lg">
-                    <RadioIndicator>
-                      {/* @ts-ignore: Unreachable code error */}
-                      <RadioIcon as={Circle} weight="fill" />
-                    </RadioIndicator>
-                    <RadioLabel>Novos</RadioLabel>
-                  </Radio>
-
-                  <Radio value="false" size="lg">
-                    <RadioIndicator>
-                      {/* @ts-ignore: Unreachable code error */}
-                      <RadioIcon as={Circle} weight="fill" />
-                    </RadioIndicator>
-                    <RadioLabel>Usados</RadioLabel>
-                  </Radio>
+                  <Radio value="all" label="Novos e usados" />
+                  <Radio value="true" label="Novos" />
+                  <Radio value="false" label="Usados" />
                 </RadioGroup>
               )}
             />
@@ -171,6 +135,7 @@ export function Filters({ onChangeFilters }: Props) {
             <Text className="text-app-gray-200 text-md" bold>
               Aceita troca?
             </Text>
+
             <Controller
               control={control}
               name="acceptTrade"
@@ -189,6 +154,7 @@ export function Filters({ onChangeFilters }: Props) {
             <Text className="text-app-gray-200 text-md" bold>
               Meios de pagamento aceitos:
             </Text>
+
             <Controller
               control={control}
               name="paymentMethods"
@@ -199,12 +165,11 @@ export function Filters({ onChangeFilters }: Props) {
                   className="gap-2"
                 >
                   {getPaymentMethods.map((item) => (
-                    <Checkbox value={item.key} key={item.key} size="lg">
-                      <CheckboxIndicator>
-                        <CheckboxIcon as={Check} size="lg" />
-                      </CheckboxIndicator>
-                      <CheckboxLabel>{item.label}</CheckboxLabel>
-                    </Checkbox>
+                    <Checkbox
+                      value={item.key}
+                      label={item.label}
+                      key={item.key}
+                    />
                   ))}
                 </CheckboxGroup>
               )}

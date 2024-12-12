@@ -19,7 +19,7 @@ export function UserHeader() {
   }, [user])
 
   function handleCreteNewProduct() {
-    navigator.navigate('productCreate')
+    navigator.navigate('productForm', { id: undefined })
   }
 
   return (

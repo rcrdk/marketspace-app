@@ -2,6 +2,7 @@ import '@styles/global.css'
 
 import { GluestackUIProvider } from '@components/ui/gluestack-ui-provider'
 import { AuthContextProvider } from '@contexts/AuthContext'
+import { ProductFormContextProvider } from '@contexts/ProductFormContext'
 import {
   Karla_400Regular,
   Karla_700Bold,
@@ -41,7 +42,9 @@ export default function App() {
         />
 
         <AuthContextProvider>
-          <Routes />
+          <ProductFormContextProvider>
+            <Routes />
+          </ProductFormContextProvider>
         </AuthContextProvider>
       </GluestackUIProvider>
     </GestureHandlerRootView>
