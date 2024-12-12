@@ -29,7 +29,7 @@ export function BottomActions({ isEditMode }: Props) {
   const handleSendMessageOnWhatsApp = useCallback(() => {
     navigateToWhatsAppConversation(
       product.user.tel,
-      `Olá, tenho interesse em comprar "${product.name} no Marketspace."`,
+      `Olá, tenho interesse em comprar "${product.name}" no Marketspace.`,
     )
   }, [product])
 

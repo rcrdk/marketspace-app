@@ -33,6 +33,8 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
     return (productPrice / 100).toLocaleString('pt-BR')
   }, [product])
 
+  const isProductNotAvailable = product.is_active === false
+
   return (
     <Pressable className="mb-6 w-[47%]" onPress={handleShowProductDetails}>
       <Box className="flex items-center justify-center relative aspect-[3/2] rounded-md overflow-hidden bg-app-gray-700">
@@ -62,7 +64,7 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
           />
         )}
 
-        {!product.is_active && (
+        {isProductNotAvailable && (
           <Box className="items-start justify-end absolute bg-app-gray-100/45 top-0 left-0 w-full h-full rounded-md">
             <Text
               className="text-app-gray-700 uppercase text-sm leading-4 pb-2 ps-2"
@@ -75,16 +77,16 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
       </Box>
 
       <Text
-        className={`text-md pt-2 pb-1 ${!product.is_active && 'text-app-gray-400'}`}
+        className={`text-md pt-2 pb-1 ${isProductNotAvailable && 'text-app-gray-400'}`}
       >
         {product.name}
       </Text>
       <Text
-        className={`text-lg ${!product.is_active && 'text-app-gray-400'}`}
+        className={`text-lg ${isProductNotAvailable && 'text-app-gray-400'}`}
         bold
       >
         <Text
-          className={`text-sm ${!product.is_active && 'text-app-gray-400'}`}
+          className={`text-sm ${isProductNotAvailable && 'text-app-gray-400'}`}
           bold
         >
           R${' '}
