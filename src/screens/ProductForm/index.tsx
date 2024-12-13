@@ -2,14 +2,14 @@ import { Header } from '@components/Header'
 import { Icon } from '@components/ui/icon'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useProductForm } from '@hooks/useProductForm'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
 import {
   type ProductFormSchema,
   productFormSchema,
 } from '@schemas/productFormSchema'
 import { ArrowLeft } from 'phosphor-react-native'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Alert, ScrollView } from 'react-native'
 
@@ -23,23 +23,48 @@ type RouteParams = {
 }
 
 export function ProductForm() {
-  const navigator = useNavigation<AppNavigatorRoutesProps>()
+  const ref = useRef<ScrollView>(null)
 
-  const { onSaveProductPreviewData, onResetProductForm } = useProductForm()
+  const navigator = useNavigation<AppNavigatorRoutesProps>()
+  const isFocused = useIsFocused()
+
+  const {
+    onSaveProductPreviewData,
+    onResetProductForm,
+    onUpdateProduct,
+    getProductImages,
+    shouldResetForm,
+  } = useProductForm()
 
   const { params } = useRoute()
   const { id } = params as RouteParams
 
-  const methods = useForm<ProductFormSchema>({
-    resolver: zodResolver(productFormSchema),
-    defaultValues: {
+  const defaultValues = useMemo(() => {
+    // originalProductData === true
+    // if (id) {
+    //   return {
+    //     name: '',
+    //     description: '',
+    //     isNew: true,
+    //     acceptTrade: false,
+    //     price: undefined,
+    //     paymentMethods: [],
+    //   }
+    // }
+
+    return {
       name: '',
       description: '',
       isNew: true,
       acceptTrade: false,
       price: undefined,
       paymentMethods: [],
-    },
+    }
+  }, [])
+
+  const methods = useForm<ProductFormSchema>({
+    resolver: zodResolver(productFormSchema),
+    defaultValues,
   })
 
   const {
@@ -48,10 +73,30 @@ export function ProductForm() {
     reset,
   } = methods
 
-  async function handleSaveProductPreview(data: ProductFormSchema) {
+  function handleSaveProductPreview(data: ProductFormSchema) {
+    if (getProductImages.length === 0) {
+      ref.current?.scrollTo({ y: 0, x: 0, animated: true })
+
+      return Alert.alert(
+        'Produto sem imagens',
+        'Para poder anunciar, o produto precisa ter ao menos uma imagem.',
+      )
+    }
+
     onSaveProductPreviewData(data)
 
     navigator.navigate('productDetails', { id: undefined, preview: true })
+  }
+
+  async function handleUpdateProductData(data: ProductFormSchema) {
+    try {
+      await onUpdateProduct(id!, data)
+
+      return navigator.navigate('productDetails', {
+        id,
+        preview: false,
+      })
+    } catch {}
   }
 
   const handleCancel = useCallback(() => {
@@ -68,8 +113,6 @@ export function ProductForm() {
             style: 'default',
             text: 'Descartar alterações',
             onPress: () => {
-              // scroll create view to top
-
               reset()
               onResetProductForm()
 
@@ -78,9 +121,9 @@ export function ProductForm() {
                   id,
                   preview: false,
                 })
-              } else {
-                navigator.goBack()
               }
+
+              navigator.goBack()
             },
           },
         ],
@@ -91,12 +134,23 @@ export function ProductForm() {
     onResetProductForm()
 
     if (id) {
-      navigator.navigate('productDetails', { id, preview: false })
-    } else {
-      navigator.goBack()
+      return navigator.navigate('productDetails', { id, preview: false })
     }
+
     navigator.goBack()
   }, [id, isDirty, navigator, onResetProductForm, reset])
+
+  // useEffect(() => {
+  //   reset(originalProductData)
+  // }, [originalProductData])
+
+  useEffect(() => {
+    reset()
+  }, [shouldResetForm, reset])
+
+  useEffect(() => {
+    if (isFocused) ref.current?.scrollTo({ y: 0, x: 0, animated: true })
+  }, [isFocused])
 
   return (
     <FormProvider {...methods}>
@@ -114,6 +168,7 @@ export function ProductForm() {
         contentContainerClassName="px-6 pb-12 gap-8"
         showsVerticalScrollIndicator={false}
         automaticallyAdjustKeyboardInsets
+        ref={ref}
       >
         <ImageFields />
         <InfoFields />
@@ -124,7 +179,9 @@ export function ProductForm() {
         onCancel={handleCancel}
         actionButton={{
           label: id ? 'Salvar anúncio' : 'Avançar',
-          onPress: handleSubmit(handleSaveProductPreview),
+          onPress: id
+            ? handleSubmit(handleUpdateProductData)
+            : handleSubmit(handleSaveProductPreview),
           loading: isSubmitting,
           disabled: isSubmitting,
         }}

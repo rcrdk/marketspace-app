@@ -4,10 +4,13 @@ import { getProduct, type GetProductResponse } from '@http/get-product'
 import { updateProductStatus } from '@http/update-product-status'
 import { useNavigation } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
+import type { ProductFormSchema } from '@schemas/productFormSchema'
 import { AppError } from '@utils/AppError'
 import { wait } from '@utils/wait'
 import { createContext, type ReactNode, useMemo, useState } from 'react'
 import { Alert } from 'react-native'
+
+import type { ProductImage } from './ProductFormContext'
 
 export type ProductDetailsContextProps = {
   product: GetProductResponse
@@ -18,6 +21,8 @@ export type ProductDetailsContextProps = {
   onFetchProductDetails: (id: string) => Promise<void>
   onUpdateProductStatus: () => Promise<void>
   onDeleteProduct: () => Promise<void>
+  // eslint-disable-next-line prettier/prettier
+  onPreviewProductDetails: (data: ProductFormSchema, images: ProductImage[]) => void
 }
 
 type ProductDetailsContextProviderProps = {
@@ -40,6 +45,17 @@ export function ProductDetailsContextProvider({
 
   const navigator = useNavigation<AppNavigatorRoutesProps>()
 
+  const getPaymentMethods = useMemo(
+    () => [
+      { key: 'pix', name: 'Pix' },
+      { key: 'card', name: 'Cartão de crédito' },
+      { key: 'boleto', name: 'Boleto' },
+      { key: 'cash', name: 'Dinheiro' },
+      { key: 'deposit', name: 'Depósito' },
+    ],
+    [],
+  )
+
   const imagesAvailableToDelete = useMemo(
     () => product?.product_images?.map((item) => item.id) ?? [],
     [product],
@@ -53,7 +69,8 @@ export function ProductDetailsContextProvider({
       const { data } = await getProduct({ id })
 
       setProduct(data)
-      setIsProductActive(data.is_active)
+
+      setIsProductActive(data.is_active !== false)
     } catch (error) {
       let message =
         'Não foi possível carregar os detalhes do produto. Tente novamente mais tarde.'
@@ -116,6 +133,43 @@ export function ProductDetailsContextProvider({
     }
   }
 
+  function onPreviewProductDetails(
+    data: ProductFormSchema,
+    images: ProductImage[],
+  ) {
+    setIsLoadingProduct(false)
+
+    const productDetails: GetProductResponse = {
+      id: '',
+      user_id: '',
+      name: data.name,
+      description: data.description,
+      is_new: data.isNew,
+      price: data.price,
+      accept_trade: data.acceptTrade,
+      is_active: true,
+      created_at: '',
+      updated_at: '',
+      payment_methods: getPaymentMethods.filter((item) =>
+        data.paymentMethods.includes(item.key),
+      ),
+      product_images: images.map((item, index) => {
+        return {
+          id: item.existentImage ? item.id : String(index),
+          path: item.existentImage?.path ?? item.selectedImage?.uri ?? '',
+        }
+      }),
+      user: {
+        avatar: '',
+        name: '',
+        tel: '',
+      },
+    }
+
+    setProduct(productDetails)
+    setIsProductActive(true)
+  }
+
   return (
     <ProductDetailsContext.Provider
       value={{
@@ -127,6 +181,7 @@ export function ProductDetailsContextProvider({
         onFetchProductDetails,
         onUpdateProductStatus,
         onDeleteProduct,
+        onPreviewProductDetails,
       }}
     >
       {children}

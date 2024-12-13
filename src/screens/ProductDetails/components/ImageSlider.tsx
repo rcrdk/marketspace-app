@@ -54,7 +54,12 @@ export function ImageSlider() {
         renderItem={({ item }) => (
           <Box className="w-full aspect-[3/2]">
             <Image
-              source={{ uri: `${API.defaults.baseURL}/images/${item.path}` }}
+              source={{
+                uri:
+                  item.id.length === 1
+                    ? item.path
+                    : `${API.defaults.baseURL}/images/${item.path}`,
+              }}
               className="absolute inset-0 w-100 h-100"
             />
           </Box>
@@ -70,25 +75,27 @@ export function ImageSlider() {
         }}
       />
 
-      <Box className="absolute bottom-3 left-6 right-6">
-        <Pagination.Basic
-          progress={progress}
-          data={product.product_images}
-          dotStyle={{
-            width: 75,
-            height: 3,
-            backgroundColor: themeColors['gray-700'],
-          }}
-          activeDotStyle={{
-            width: 75,
-            overflow: 'hidden',
-            backgroundColor: themeColors['blue-light'],
-          }}
-          containerStyle={{ gap: 8, height: 3 }}
-          horizontal
-          onPress={onPressPagination}
-        />
-      </Box>
+      {product.product_images.length > 1 && (
+        <Box className="absolute bottom-3 left-6 right-6">
+          <Pagination.Basic
+            progress={progress}
+            data={product.product_images}
+            dotStyle={{
+              width: 75,
+              height: 3,
+              backgroundColor: themeColors['gray-700'],
+            }}
+            activeDotStyle={{
+              width: 75,
+              overflow: 'hidden',
+              backgroundColor: themeColors['blue-light'],
+            }}
+            containerStyle={{ gap: 8, height: 3 }}
+            horizontal
+            onPress={onPressPagination}
+          />
+        </Box>
+      )}
 
       {!isProductActive && (
         <Box className="absolute top-0 left-0 w-full h-full bg-app-gray-100/60 items-center justify-center">

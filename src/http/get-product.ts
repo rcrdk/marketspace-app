@@ -9,12 +9,12 @@ export type GetProductResponse = {
   user_id: string
   name: string
   description: string
-  is_new: true
+  is_new: boolean
   price: number
   accept_trade: boolean
   is_active: boolean
-  created_at: number
-  updated_at: number
+  created_at: string
+  updated_at: string
   payment_methods: {
     key: string
     name: string

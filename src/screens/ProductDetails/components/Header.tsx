@@ -1,4 +1,5 @@
 import { Header as HeaderComponent } from '@components/Header'
+import { Box } from '@components/ui/box'
 import { Icon } from '@components/ui/icon'
 import { Text } from '@components/ui/text'
 import { VStack } from '@components/ui/vstack'
@@ -33,36 +34,39 @@ export function Header({ isPreviewMode, isEditMode }: Props) {
 
   if (isPreviewMode) {
     return (
-      <SafeAreaView
-        className="bg-app-blue-light"
-        edges={['top', 'left', 'right']}
-      >
-        <VStack className="px-6 pt-6 pb-8 gap-1">
-          <Text className="text-center text-lg text-app-gray-700" bold>
-            Pré visualização do anúncio
-          </Text>
-          <Text className="text-center text-md text-app-gray-700">
-            É assim que seu produto vai aparecer!
-          </Text>
-        </VStack>
-      </SafeAreaView>
+      <Box className="bg-app-blue-light">
+        <SafeAreaView edges={['top', 'left', 'right']}>
+          <VStack className="px-6 pt-4 pb-6 gap-1">
+            <Text className="text-center text-lg text-app-gray-700" bold>
+              Pré visualização do anúncio
+            </Text>
+            <Text className="text-center text-md text-app-gray-700">
+              É assim que seu produto vai aparecer!
+            </Text>
+          </VStack>
+        </SafeAreaView>
+      </Box>
     )
   }
 
   return (
-    <HeaderComponent
-      title="Detalhes do anúncio"
-      leftButton={{
-        onPress: handleGoBack,
-        children: <Icon as={ArrowLeft} className="fill-app-gray-100 w-7 h-7" />,
-      }}
-      rightButton={{
-        onPress: handleEditProduct,
-        children: (
-          <Icon as={PencilLine} className="fill-app-gray-100 w-7 h-7" />
-        ),
-        style: hideEditButton ? { display: 'none' } : undefined,
-      }}
-    />
+    <Box>
+      <HeaderComponent
+        title="Detalhes do anúncio"
+        leftButton={{
+          onPress: handleGoBack,
+          children: (
+            <Icon as={ArrowLeft} className="fill-app-gray-100 w-7 h-7" />
+          ),
+        }}
+        rightButton={{
+          onPress: handleEditProduct,
+          children: (
+            <Icon as={PencilLine} className="fill-app-gray-100 w-7 h-7" />
+          ),
+          style: hideEditButton ? { display: 'none' } : undefined,
+        }}
+      />
+    </Box>
   )
 }

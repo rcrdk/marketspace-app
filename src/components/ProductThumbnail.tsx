@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
 import { API } from '@services/api'
 import { themeColors } from '@styles/colors'
+import { getPriceFormatted } from '@utils/getPriceFormatted'
 import { ImageSquare as ImageIcon } from 'phosphor-react-native'
 import { useMemo } from 'react'
 import { Image } from 'react-native'
@@ -30,8 +31,7 @@ export function ProductThumbnail({ product, showSellerAvatar = false }: Props) {
 
   const formattedPrice = useMemo(() => {
     const productPrice = product?.price ?? 0
-
-    return (productPrice / 100).toLocaleString('pt-BR')
+    return getPriceFormatted(productPrice)
   }, [product])
 
   const isProductNotAvailable = product.is_active === false

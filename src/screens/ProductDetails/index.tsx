@@ -1,6 +1,8 @@
+import { Box } from '@components/ui/box'
 import { ProductDetailsContextProvider } from '@contexts/ProductDetailsContext'
 import { useAuth } from '@hooks/useAuth'
 import { useProductDetails } from '@hooks/useProductDetails'
+import { useProductForm } from '@hooks/useProductForm'
 import { useFocusEffect, useRoute } from '@react-navigation/native'
 import { useCallback, useMemo } from 'react'
 import { ScrollView } from 'react-native'
@@ -20,8 +22,9 @@ function ProductDetailsComponent() {
   const { id, preview } = params as RouteParams
 
   const { user } = useAuth()
-  const { product, onFetchProductDetails, isLoadingProduct } =
-    useProductDetails()
+  // eslint-disable-next-line prettier/prettier
+  const { product, onFetchProductDetails, onPreviewProductDetails, isLoadingProduct } = useProductDetails()
+  const { productPreviewData, getProductImages } = useProductForm()
 
   const authUserOwnsProduct = useMemo(
     () => user.id === product?.user_id,
@@ -34,11 +37,11 @@ function ProductDetailsComponent() {
         onFetchProductDetails(id)
       }
 
-      if (!id && preview) {
-        // ON 'useProductDetails' CREATE A FUNTION TO GENERATE A 'product' OBJECT
+      if (!id && preview && productPreviewData && getProductImages) {
+        onPreviewProductDetails(productPreviewData, getProductImages)
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, preview]),
+    }, [id, preview, productPreviewData, getProductImages]),
   )
 
   return (
@@ -53,7 +56,12 @@ function ProductDetailsComponent() {
         <Info />
       </ScrollView>
 
-      <BottomActions isEditMode={authUserOwnsProduct} isPreviewMode={preview} />
+      <Box>
+        <BottomActions
+          isEditMode={authUserOwnsProduct}
+          isPreviewMode={preview}
+        />
+      </Box>
     </>
   )
 }

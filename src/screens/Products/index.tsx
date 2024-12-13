@@ -6,6 +6,7 @@ import {
 } from '@components/ProductThumbnail'
 import { Box } from '@components/ui/box'
 import { Icon } from '@components/ui/icon'
+import { useProductForm } from '@hooks/useProductForm'
 import {
   getUserProducts,
   type GetUserProductsResponse,
@@ -26,6 +27,7 @@ export function Products() {
   const [products, setProducts] = useState<GetUserProductsResponse[]>([])
 
   const navigator = useNavigation<AppNavigatorRoutesProps>()
+  const { shouldResetForm } = useProductForm()
 
   function handleNewProduct() {
     navigator.navigate('productForm', { id: undefined })
@@ -64,7 +66,7 @@ export function Products() {
     useCallback(() => {
       fetchUserProducts()
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filterSelected]),
+    }, [filterSelected, shouldResetForm]),
   )
 
   return (

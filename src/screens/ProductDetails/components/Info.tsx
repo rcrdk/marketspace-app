@@ -6,16 +6,19 @@ import { Icon } from '@components/ui/icon'
 import { Skeleton } from '@components/ui/skeleton'
 import { Text } from '@components/ui/text'
 import { VStack } from '@components/ui/vstack'
+import { useAuth } from '@hooks/useAuth'
 import { useProductDetails } from '@hooks/useProductDetails'
+import { getPriceFormatted } from '@utils/getPriceFormatted'
 import { Bank, Barcode, CreditCard, Money, QrCode } from 'phosphor-react-native'
 import { useMemo } from 'react'
 
 export function Info() {
   const { product, isLoadingProduct } = useProductDetails()
+  const { user } = useAuth()
 
   const getProductPriceFormatted = useMemo(() => {
     const productPrice = product?.price ?? 0
-    return (productPrice / 100).toLocaleString('pt-BR')
+    return getPriceFormatted(productPrice)
   }, [product])
 
   if (isLoadingProduct) {
@@ -57,8 +60,18 @@ export function Info() {
   return (
     <VStack className="gap-6 px-6 pb-12 pt-5">
       <HStack className="items-center gap-2">
-        <Avatar uri={product.user.avatar} size="tiny" variants="branded" />
-        <Text className="text-md">{product.user.name}</Text>
+        {product.user.name ? (
+          <>
+          <Avatar uri={product.user.avatar} size="tiny" variants="branded" />
+          <Text className="text-md">{product.user.name}</Text>
+          </>
+        ) : (
+          <>
+          <Avatar uri={user.avatar} size="tiny" variants="branded" />
+          <Text className="text-md">{user.name}</Text>
+          </>
+        )}
+        
       </HStack>
 
       <VStack className="gap-2">

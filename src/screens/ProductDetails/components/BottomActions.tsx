@@ -9,6 +9,7 @@ import { useProductForm } from '@hooks/useProductForm'
 import { useNavigation } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
 import { themeColors } from '@styles/colors'
+import { getPriceFormatted } from '@utils/getPriceFormatted'
 import { navigateToWhatsAppConversation } from '@utils/navigateToWhatsAppConversation'
 import {
   ArrowLeft,
@@ -39,17 +40,14 @@ export function BottomActions({ isEditMode, isPreviewMode }: Props) {
     onUpdateProductStatus,
   } = useProductDetails()
 
-  const { onPublishProduct, onResetProductForm } = useProductForm()
+  const { onPublishProduct, isSubmittingProduct } = useProductForm()
 
-  const handlePublishProduct = useCallback(() => {
-    // try catch
-    onPublishProduct()
-    onResetProductForm()
-
-    // reset form on success
-    // scroll view to top
-    navigator.navigate('products')
-  }, [navigator, onPublishProduct, onResetProductForm])
+  const handlePublishProduct = useCallback(async () => {
+    try {
+      await onPublishProduct()
+      navigator.navigate('products')
+    } catch {}
+  }, [navigator, onPublishProduct])
 
   const handleBackToProductForm = useCallback(() => {
     navigator.navigate('productForm', {})
@@ -100,8 +98,22 @@ export function BottomActions({ isEditMode, isPreviewMode }: Props) {
 
   const getProductPriceFormatted = useMemo(() => {
     const productPrice = product?.price ?? 0
-    return (productPrice / 100).toLocaleString('pt-BR')
+    return getPriceFormatted(productPrice)
   }, [product])
+
+  if (isLoadingProduct) {
+    return (
+      <SafeAreaView
+        className="bg-app-gray-700 px-6 pt-6 ios:pb-0 android:pb-6"
+        edges={['bottom', 'left', 'right']}
+      >
+        <HStack className="item-center justify-between">
+          <Skeleton className="w-32 h-12" />
+          <Skeleton className="w-44 h-12" />
+        </HStack>
+      </SafeAreaView>
+    )
+  }
 
   if (isPreviewMode) {
     return (
@@ -121,6 +133,7 @@ export function BottomActions({ isEditMode, isPreviewMode }: Props) {
               />
             }
             onPress={handleBackToProductForm}
+            disabled={isSubmittingProduct}
           />
 
           <Button
@@ -134,21 +147,9 @@ export function BottomActions({ isEditMode, isPreviewMode }: Props) {
               />
             }
             onPress={handlePublishProduct}
+            disabled={isSubmittingProduct}
+            loading={isSubmittingProduct}
           />
-        </HStack>
-      </SafeAreaView>
-    )
-  }
-
-  if (isLoadingProduct) {
-    return (
-      <SafeAreaView
-        className="bg-app-gray-700 px-6 pt-6 ios:pb-0 android:pb-6"
-        edges={['bottom', 'left', 'right']}
-      >
-        <HStack className="item-center justify-between">
-          <Skeleton className="w-32 h-12" />
-          <Skeleton className="w-44 h-12" />
         </HStack>
       </SafeAreaView>
     )
