@@ -6,7 +6,9 @@ export async function navigateToWhatsAppConversation(
 ) {
   const phoneWithOnlyNumbers = parseInt(phone.replace(/\D+/g, ''))
   const phoneWithSymbolByOS =
-    Platform.OS === 'ios' ? phoneWithOnlyNumbers : `+${phoneWithOnlyNumbers}`
+    Platform.OS === 'ios'
+      ? `55{phoneWithOnlyNumbers}`
+      : `+55${phoneWithOnlyNumbers}`
 
   const formattedURL = `whatsapp://send?phone=${phoneWithSymbolByOS}&text=${encodeURI(message ?? '')}`
 
