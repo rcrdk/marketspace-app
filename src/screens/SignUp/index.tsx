@@ -96,7 +96,7 @@ export function SignUp() {
             <Text className="text-center text-2xl text-app-gray-100 my-2" bold>
               Boas vindas!
             </Text>
-            <Text className="text-center text-md text-gray-200 leading-6">
+            <Text className="text-center text-md text-app-gray-200 leading-6">
               Crie sua conta e use o espaço para comprar itens variados e vender
               seus produtos
             </Text>
@@ -118,7 +118,7 @@ export function SignUp() {
                   autoCapitalize="words"
                   value={value}
                   onChangeText={onChange}
-                  errorMessage={errors.name?.message}
+                  errorMessage={errors.name}
                   disabled={isSubmitting}
                 />
               )}
@@ -135,7 +135,7 @@ export function SignUp() {
                   autoCapitalize="none"
                   value={value}
                   onChangeText={onChange}
-                  errorMessage={errors.email?.message}
+                  errorMessage={errors.email}
                   disabled={isSubmitting}
                 />
               )}
@@ -150,7 +150,7 @@ export function SignUp() {
                   keyboardType="phone-pad"
                   value={value}
                   onChangeText={onChange}
-                  errorMessage={errors.phone?.message}
+                  errorMessage={errors.phone}
                   disabled={isSubmitting}
                 />
               )}
@@ -171,7 +171,7 @@ export function SignUp() {
                   onSubmitEditing={handleSubmit(handleSignUpForm)}
                   value={value}
                   onChangeText={onChange}
-                  errorMessage={errors.password?.message}
+                  errorMessage={errors.password}
                   disabled={isSubmitting}
                 />
               )}
@@ -194,7 +194,7 @@ export function SignUp() {
                   onSubmitEditing={handleSubmit(handleSignUpForm)}
                   value={value}
                   onChangeText={onChange}
-                  errorMessage={errors.confirm_password?.message}
+                  errorMessage={errors.confirm_password}
                   disabled={isSubmitting}
                 />
               )}

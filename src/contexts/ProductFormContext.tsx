@@ -1,6 +1,8 @@
+/* eslint-disable prettier/prettier */
 import { createProduct } from '@http/create-product'
 import { createProductImages } from '@http/create-product-images'
 import { deleteProductImages } from '@http/delete-product-images'
+import { getProduct } from '@http/get-product'
 import { updateProduct } from '@http/update-product'
 import type { ProductFormSchema } from '@schemas/productFormSchema'
 import { AppError } from '@utils/AppError'
@@ -19,7 +21,7 @@ export type ProductImageSelected = {
   type: string
 }
 
-type ProductImageExistent = {
+export type ProductImageExistent = {
   id: string
   path: string
 }
@@ -32,15 +34,21 @@ export type ProductImage = {
 
 export type ProductFormContextProps = {
   productPreviewData?: ProductFormSchema
-  isSubmittingProduct: boolean
-  shouldResetForm: number
+  onSaveProductPreviewData: (data: ProductFormSchema) => void
+
+  productEditData?: ProductFormSchema
+  isLoadingProductEditData: boolean
+  onGetProductEditData: (id: string) => Promise<void>
+  onPublishProduct: () => Promise<void>
+  onUpdateProduct: (productId: string, data: ProductFormSchema) => Promise<void>
+  
   getProductImages: ProductImage[]
   onSelectProductImage: () => Promise<ProductImageSelected | any>
   onDeleteProductImage: (data: ProductImage) => void
-  onSaveProductPreviewData: (data: ProductFormSchema) => void
+  
+  isSubmittingProduct: boolean
+  shouldResetForm: number
   onResetProductForm: () => void
-  onPublishProduct: () => Promise<void>
-  onUpdateProduct: (productId: string, data: ProductFormSchema) => Promise<void>
 }
 
 type ProductFormContextProviderProps = {
@@ -54,15 +62,14 @@ export const ProductFormContext = createContext<ProductFormContextProps>(
 export function ProductFormContextProvider({
   children,
 }: ProductFormContextProviderProps) {
-  const [productPreviewData, setProductPreviewData] =
-    useState<ProductFormSchema>()
+  const [productPreviewData, setProductPreviewData] = useState<ProductFormSchema>()
+  const [productEditData , setProductEditData] = useState<ProductFormSchema>()
+  const [isLoadingProductEditData, setIsLoadingProductEditData] = useState(true)
 
   const [isSubmittingProduct, setIsSubmittingProduct] = useState(false)
   const [shouldResetForm, setShouldResetForm] = useState(0)
 
-  // eslint-disable-next-line prettier/prettier
   const [currentImagesIdsToDelete, setCurrentImagesIdsToDelete] = useState<string[]>([])
-  // eslint-disable-next-line prettier/prettier
   const [selectedImages, setSelectedImages] = useState<ProductImageSelected[]>([])
   const [currentImages, setCurrentImages] = useState<ProductImageExistent[]>([])
 
@@ -134,10 +141,45 @@ export function ProductFormContextProvider({
 
   function onResetProductForm() {
     setProductPreviewData(undefined)
+    setProductEditData(undefined)
     setShouldResetForm((prev) => prev + 1)
     setCurrentImages([])
     setSelectedImages([])
     setCurrentImagesIdsToDelete([])
+  }
+
+  async function onGetProductEditData(id: string) {
+    setIsLoadingProductEditData(true)
+
+    try {
+      await wait()
+
+      const { data } = await getProduct({ id })
+
+      setCurrentImages(data.product_images)
+
+      setProductEditData({
+        name: data.name,
+        description: data.description,
+        price: data.price,
+        acceptTrade: data.accept_trade,
+        isNew: data.is_new,
+        paymentMethods: data.payment_methods.map((item) => item.key),
+      })
+
+      setIsLoadingProductEditData(false)
+    } catch (error) {
+      let message =
+        'Não foi possível carregar o anúncio para edição. Tente novamente mais tarde.'
+
+      if (error instanceof AppError) {
+        message = error.message
+      }
+
+      Alert.alert('Erro', message)
+
+      onResetProductForm()
+    }
   }
 
   async function onPublishProduct() {
@@ -236,15 +278,21 @@ export function ProductFormContextProvider({
     <ProductFormContext.Provider
       value={{
         productPreviewData,
-        isSubmittingProduct,
-        shouldResetForm,
+        onSaveProductPreviewData,
+
+        productEditData,
+        isLoadingProductEditData,
+        onGetProductEditData,
+        onPublishProduct,
+        onUpdateProduct,
+
         getProductImages,
         onSelectProductImage,
         onDeleteProductImage,
-        onSaveProductPreviewData,
+
+        isSubmittingProduct,
+        shouldResetForm,
         onResetProductForm,
-        onPublishProduct,
-        onUpdateProduct,
       }}
     >
       {children}

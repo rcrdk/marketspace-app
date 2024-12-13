@@ -6,6 +6,7 @@ import {
 import { VStack } from '@components/ui/vstack'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getProducts, type GetProductsResponse } from '@http/get-products'
+import { useFocusEffect } from '@react-navigation/native'
 import {
   type ProductsFilterSchema,
   productsFilterSchema,
@@ -13,7 +14,7 @@ import {
 import { AppError } from '@utils/AppError'
 import { isBooleanOrUndefined } from '@utils/isBooleanOrUndefined'
 import { wait } from '@utils/wait'
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Alert, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -73,10 +74,12 @@ export function Home() {
     }
   }
 
-  useEffect(() => {
-    fetchProducts()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersSelected])
+  useFocusEffect(
+    useCallback(() => {
+      fetchProducts()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filtersSelected]),
+  )
 
   return (
     <FormProvider {...methods}>

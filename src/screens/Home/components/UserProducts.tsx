@@ -7,6 +7,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
 import { themeColors } from '@styles/colors'
 import { AppError } from '@utils/AppError'
+import { wait } from '@utils/wait'
 import { ArrowRight, Tag } from 'phosphor-react-native'
 import { useCallback, useState } from 'react'
 import { Alert, Pressable } from 'react-native'
@@ -25,6 +26,8 @@ export function UserProducts() {
     setIsLoading(true)
 
     try {
+      await wait()
+
       const { data: products } = await getUserProducts({
         isActive: true,
       })

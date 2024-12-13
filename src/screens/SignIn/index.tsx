@@ -89,7 +89,7 @@ export function SignIn() {
                   autoCapitalize="none"
                   value={value}
                   onChangeText={onChange}
-                  errorMessage={errors.email?.message}
+                  errorMessage={errors.email}
                   disabled={isSubmitting}
                 />
               )}
@@ -110,7 +110,7 @@ export function SignIn() {
                   onSubmitEditing={handleSubmit(handleSignInForm)}
                   value={value}
                   onChangeText={onChange}
-                  errorMessage={errors.password?.message}
+                  errorMessage={errors.password}
                   disabled={isSubmitting}
                 />
               )}

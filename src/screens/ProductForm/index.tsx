@@ -2,7 +2,12 @@ import { Header } from '@components/Header'
 import { Icon } from '@components/ui/icon'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useProductForm } from '@hooks/useProductForm'
-import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native'
 import type { AppNavigatorRoutesProps } from '@routes/app.routes'
 import {
   type ProductFormSchema,
@@ -11,7 +16,7 @@ import {
 import { ArrowLeft } from 'phosphor-react-native'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Alert, ScrollView } from 'react-native'
+import { ActivityIndicator, Alert, ScrollView } from 'react-native'
 
 import { BottomActions } from './components/BottomActions'
 import { ImageFields } from './components/ImageFields'
@@ -34,23 +39,26 @@ export function ProductForm() {
     onUpdateProduct,
     getProductImages,
     shouldResetForm,
+    isSubmittingProduct,
+    onGetProductEditData,
+    isLoadingProductEditData,
+    productEditData,
   } = useProductForm()
 
   const { params } = useRoute()
   const { id } = params as RouteParams
 
   const defaultValues = useMemo(() => {
-    // originalProductData === true
-    // if (id) {
-    //   return {
-    //     name: '',
-    //     description: '',
-    //     isNew: true,
-    //     acceptTrade: false,
-    //     price: undefined,
-    //     paymentMethods: [],
-    //   }
-    // }
+    if (id && productEditData) {
+      return {
+        name: productEditData.name,
+        description: productEditData.description,
+        isNew: productEditData.isNew,
+        acceptTrade: productEditData.acceptTrade,
+        price: productEditData.price / 100,
+        paymentMethods: productEditData.paymentMethods,
+      }
+    }
 
     return {
       name: '',
@@ -60,7 +68,7 @@ export function ProductForm() {
       price: undefined,
       paymentMethods: [],
     }
-  }, [])
+  }, [id, productEditData])
 
   const methods = useForm<ProductFormSchema>({
     resolver: zodResolver(productFormSchema),
@@ -69,7 +77,7 @@ export function ProductForm() {
 
   const {
     handleSubmit,
-    formState: { isSubmitting, isDirty },
+    formState: { isDirty },
     reset,
   } = methods
 
@@ -140,13 +148,23 @@ export function ProductForm() {
     navigator.goBack()
   }, [id, isDirty, navigator, onResetProductForm, reset])
 
-  // useEffect(() => {
-  //   reset(originalProductData)
-  // }, [originalProductData])
+  useEffect(() => {
+    reset(defaultValues)
+  }, [defaultValues, reset])
 
   useEffect(() => {
     reset()
   }, [shouldResetForm, reset])
+
+  useFocusEffect(
+    useCallback(() => {
+      if (id) {
+        onGetProductEditData(id)
+      }
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]),
+  )
 
   useEffect(() => {
     if (isFocused) ref.current?.scrollTo({ y: 0, x: 0, animated: true })
@@ -165,14 +183,20 @@ export function ProductForm() {
       />
 
       <ScrollView
-        contentContainerClassName="px-6 pb-12 gap-8"
+        contentContainerClassName="flex-grow px-6 pb-12 gap-8 justify-center"
         showsVerticalScrollIndicator={false}
         automaticallyAdjustKeyboardInsets
         ref={ref}
       >
-        <ImageFields />
-        <InfoFields />
-        <SaleFields />
+        {isLoadingProductEditData ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <>
+            <ImageFields />
+            <InfoFields />
+            <SaleFields />
+          </>
+        )}
       </ScrollView>
 
       <BottomActions
@@ -182,8 +206,8 @@ export function ProductForm() {
           onPress: id
             ? handleSubmit(handleUpdateProductData)
             : handleSubmit(handleSaveProductPreview),
-          loading: isSubmitting,
-          disabled: isSubmitting,
+          loading: isSubmittingProduct,
+          disabled: isSubmittingProduct || isLoadingProductEditData,
         }}
       />
     </FormProvider>

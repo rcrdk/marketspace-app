@@ -7,7 +7,7 @@ export const productFormSchema = z.object({
   acceptTrade: z.coerce.boolean().default(false),
   price: z.coerce
     .number({ message: 'Informe um valor.' })
-    .transform((value) => value * 100)
+    .transform((value) => Math.round(value * 100))
     .refine((value) => value >= 100, 'Informe o valor mínimo de R$ 1,00.'),
   paymentMethods: z.array(z.string()).min(1, 'Selecione ao menos um método.'),
 })

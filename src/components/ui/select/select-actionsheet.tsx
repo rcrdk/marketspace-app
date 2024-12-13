@@ -508,6 +508,7 @@ const ActionsheetSectionHeaderText = React.forwardRef<
 const ActionsheetIcon = React.forwardRef<
   React.ElementRef<typeof UIActionsheet.Icon>,
   IActionsheetIconProps
+  // @ts-expect-error "as" property is not being recognized
 >(({ className, as: AsComp, size = 'sm', ...props }, ref) => {
   if (AsComp) {
     return (
