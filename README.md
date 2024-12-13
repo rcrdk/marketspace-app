@@ -1,6 +1,6 @@
-<!-- https://efficient-sloth-d85.notion.site/Desafio-03-Marketspace-39a72342e820424aaa12d7713ab1d175#87372372df824b128392065e01360a77 -->
-
 # 🛍️ React Native Marketspace App
+This is a app designed to simplify the process of buying and selling products.  The app was developed as a challenge during my lessons at [Rocketseat](https://rocketseat.com.br/).
+
 ---
 
 <p align="center">
@@ -8,7 +8,29 @@
 </p>
 
 ## 📱 Features
-<!-- - TBD -->
+- **Authentication**
+  - Sign-in and Sign-up screens for user access.
+  
+- **Dashboard**
+  - Displays the number of active products the user is selling.
+  - Shows a list of products available to buy with filtering options:
+    - Query (search bar)
+    - Product condition (new/used)
+    - Payment methods
+    - Accept trade option
+
+- **Product Details**
+  - View detailed information about a product, including:
+    - Product images
+    - Name and description
+    - Pricing
+    - Accepted payment methods
+    - Seller's contact information
+
+- **Product Management**
+  - Manage the products you're selling:
+    - Create and edit product listings with preview before publishing.
+    - Toggle product availability (active/inactive)
 
 ## ⚙️ Tech Stack
 - [React Native](https://reactnative.dev/) + [Expo](https://expo.dev/)

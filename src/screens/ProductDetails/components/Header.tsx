@@ -25,7 +25,7 @@ export function Header({ isPreviewMode, isEditMode }: Props) {
       return navigator.navigate('products')
     }
 
-    return navigator.navigate('home')
+    return navigator.navigate('mainTabs')
   }
 
   function handleEditProduct() {
