@@ -3,6 +3,7 @@ import {
   type BottomTabNavigationProp,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Home } from '@screens/Home'
 import { ProductDetails } from '@screens/ProductDetails'
 import { ProductForm } from '@screens/ProductForm'
@@ -11,10 +12,8 @@ import { themeColors } from '@styles/colors'
 import { House, SignOut, Tag } from 'phosphor-react-native'
 import { Alert, Platform } from 'react-native'
 
-type AppRoutesType = {
-  home: undefined
-  products: undefined
-  signOut: undefined
+type AppStackRoutesType = {
+  mainTabs: undefined
   productForm: {
     id?: string
   }
@@ -24,13 +23,20 @@ type AppRoutesType = {
   }
 }
 
-export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutesType>
+type AppTabsRoutesType = {
+  home: undefined
+  products: undefined
+  signOut: undefined
+}
 
-const { Navigator, Screen } = createBottomTabNavigator<AppRoutesType>()
+export type AppNavigatorRoutesProps = BottomTabNavigationProp<
+  AppStackRoutesType & AppTabsRoutesType
+>
 
-const SignOutComponent = () => null
+const Stack = createNativeStackNavigator<AppStackRoutesType>()
+const Tab = createBottomTabNavigator<AppTabsRoutesType>()
 
-export function AppRoutes() {
+function MainTabs() {
   const { onSignOut } = useAuth()
 
   function handleSignOut() {
@@ -41,7 +47,7 @@ export function AppRoutes() {
   }
 
   return (
-    <Navigator
+    <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -57,7 +63,7 @@ export function AppRoutes() {
         },
       }}
     >
-      <Screen
+      <Tab.Screen
         name="home"
         component={Home}
         options={{
@@ -65,7 +71,7 @@ export function AppRoutes() {
         }}
       />
 
-      <Screen
+      <Tab.Screen
         name="products"
         component={Products}
         options={{
@@ -73,9 +79,9 @@ export function AppRoutes() {
         }}
       />
 
-      <Screen
+      <Tab.Screen
         name="signOut"
-        component={SignOutComponent}
+        component={() => <></>}
         options={{
           tabBarInactiveTintColor: themeColors['gray-100'],
           tabBarIcon: ({ size }) => (
@@ -89,30 +95,21 @@ export function AppRoutes() {
           },
         }}
       />
+    </Tab.Navigator>
+  )
+}
 
-      <Screen
-        name="productForm"
-        component={ProductForm}
-        options={{
-          tabBarButton: () => <></>,
-          tabBarItemStyle: { display: 'none' },
-          tabBarStyle: {
-            display: 'none',
-          },
-        }}
+export function AppRoutes() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="mainTabs"
+        component={MainTabs}
+        options={{ headerShown: false }}
       />
 
-      <Screen
-        name="productDetails"
-        component={ProductDetails}
-        options={{
-          tabBarButton: () => <></>,
-          tabBarItemStyle: { display: 'none' },
-          tabBarStyle: {
-            display: 'none',
-          },
-        }}
-      />
-    </Navigator>
+      <Stack.Screen name="productForm" component={ProductForm} />
+      <Stack.Screen name="productDetails" component={ProductDetails} />
+    </Stack.Navigator>
   )
 }
